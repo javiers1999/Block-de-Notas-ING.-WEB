@@ -1,0 +1,53 @@
+<body>
+    <header>
+        <h1>Semaforo Tareas</h1>
+    
+        <div id="I" class="c"></div>INICIADA
+        <div id="E" class="c"></div>EN PROCESO
+        <div id="T" class="c"></div>TERMINADA
+    </header>
+    <form [formGroup]="semaforo" (ngSubmit)="crear(this.idN)" novalidate>
+        <input type="hidden" formControlName="id" [value]="valor()" name="idN">
+        <input type="hidden" formControlName="listId" [value]="valorLista()">
+
+        <ul id="tittle">    
+            <li>
+                <label for="titulo">Titulo: </label>
+                <input formControlName="titulo" type="text" [value]="obtenerT()">
+            </li>
+    
+            <li>
+                <label for="estado">Estado: </label>
+                <select formControlName="estado">
+                    <option selected value=""></option>
+                    <option formControlName="opcion1" id="opcion1" value="Iniciada">Iniciada</option>
+                    <option formControlName="opcion2" id="opcion2" value="EnProceso">En Proceso</option>
+                    <option formControlName="opcion3" id="opcion3" value="Terminada">Terminada</option>
+                </select>
+            </li>
+
+            <li>
+                <button type="submit" [disabled]="semaforo.invalid">Agregar</button>
+                <button type="button" (click)="Eliminar()" [disabled]="semaforo.invalid">Eliminar</button>
+                <button type="reset">Limpiar</button>
+            </li>
+
+            <li>
+                <label for="descripcion">Descripcion: </label>
+                <textarea name="descripcion" formControlName="descripcion" id="descripcion" maxlength="150"></textarea>
+            </li>
+        </ul>
+
+        <ul class="tareas">
+            <li id="col1" *ngFor="let item of lista; index as i" (click)="edit(i,1)">{{item}}</li>
+        </ul>
+
+        <ul class="tareas">
+            <li id="col2" *ngFor="let item of lista2">{{item}}</li>
+        </ul>
+
+        <ul class="tareas">
+            <li id="col3" *ngFor="let item of lista3">{{item}}</li>
+        </ul>
+    </form> 
+</body>
