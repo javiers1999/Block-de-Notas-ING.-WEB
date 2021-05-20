@@ -20,12 +20,9 @@ export class ComponenteComponent implements OnInit {
   idN:any = -1;
   descripcion:any;
 
-  lista:Array<Object>=[];
+  lista:Array<String>=[];
   lista2:Array<String>=[];
   lista3:Array<String>=[];
-
-  lista1A:Array<String>=[];
-
 
   constructor(public fb:FormBuilder, private servicio:DatosService) {
       this.semaforo=this.fb.group({
@@ -63,12 +60,12 @@ export class ComponenteComponent implements OnInit {
   }
 
   crear(idN:number){
-    let cJson = {
+    let cJson =[ {
       "action" : "datos",
-      "titulo" : this.titulo.value,
+      "titulos" : this.titulo.value,
       "descripcion": this.descripcion.value,
       "estado": this.estado.value
-    }
+    }]
 
     console.log(this.servicio.enviarPOST(cJson));
 
@@ -93,7 +90,6 @@ export class ComponenteComponent implements OnInit {
         "descripcion": this.descripcion.value,
         "estado": this.estado.value
       }
-  
       console.log(this.servicio.enviarPOST(cJson));
 
       this.lista.forEach((item,index)=>{
