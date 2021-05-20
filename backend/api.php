@@ -1,18 +1,11 @@
 <?php
-header('Access-Control-Allow-Origin: http://localhost:4200'); 
-header('Access-Control-Allow-Methods: GET, POST');
-header('Access-Control-Allow-Credentials: true');
-header("Access-Control-Allow-Headers: X-Requested-With, Accept, Content-Type");
-header('content-type: application/json; charset=utf-8');
-
-
 switch ($_SERVER["REQUEST_METHOD"]) {
-    case "GET":
+    case "GET": 
         if (isset($_GET['action'])){
             $action = $_GET['action'];
             switch ($action){
                 case 'datos':
-                    $archivo = file_get_contents('./BD.json');
+                    $archivo = file_get_contents('./BDA.json');
                     echo($archivo);
                     break;
             }
@@ -25,20 +18,47 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             $action = $jsonObj->action;
             switch ($action){
                 case 'datos':
-                    $archivo = file_get_contents('./BD.json');
+                    $archivo = file_get_contents('./BDA.json');
+                    $jsonData = json_decode($archivo, true);
+                    var_dump($jsonData);
+                    $aIngresar = new stdClass();
+                    $aIngresar->titulo = $jsonObj->titulo;
+                    $aIngresar->estado = $jsonObj->estado;
+                    $aIngresar->descripcion = $jsonObj->descripcion;
+                    
+                    $cant = count($jsonData); 
+                    $jsonData[$cant] = $aIngresar;
+
+                    var_dump($jsonData);
+
+                    $file = fopen("BDA.json" , "w");
+                    if ($file){
+                        fwrite($file, json_encode($jsonData));
+                        fclose($file);
+                    } else {
+                        echo json_encode(array("error" => 400));
+                    }
+                    break;
+                case 'eliminarDato':
+                    $archivo = file_get_contents('./BDA.json');
                     $jsonData = json_decode($archivo);
+                    var_dump($jsonData);
+                    var_dump($jsonObj);
+                    for($i = 0; $i<count($jsonData); $i++){
+                        if ($jsonObj->titulo == $jsonData[$i]->titulo && $jsonObj->descripcion == $jsonData[$i]->descripcion){
+                           unset($jsonData[$i]);
+                        }
+                    }
+                    var_dump($jsonData);
 
-                    $aIngresar = array(
-                        "titulo" => $jsonObj->titulo,
-                        "estado" => $jsonObj->estado,
-                        "descripcion" => $jsonObj->descripcion
-                    );
-                    $jsonData[count($jsonData)] = $aIngresar;
-
-                    echo json_encode($jsonData);
-
-                    $file = fopen("BD.json" , "w");
-                    fwrite($file, json_encode($jsonData));
+                    $file = fopen("BDA.json" , "w");
+                    if ($file){
+                        fwrite($file, json_encode($jsonData));
+                        fclose($file);
+                    } else {
+                        echo json_encode(array("error" => 400));
+                    }
+                    
                     break;
             }
         } else {

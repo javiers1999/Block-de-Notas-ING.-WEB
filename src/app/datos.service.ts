@@ -14,13 +14,7 @@ export class DatosService {
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
 
-    xhr.addEventListener("readystatechange", function() {
-      if(this.readyState === 4) {
-        // this.responseText;
-      }
-    });
-
-    xhr.open("POST", "http://localhost/proyectoIngWeb/backend/api.php");
+    xhr.open("POST", "http://127.0.0.1/proyectoIngWeb/backend/api.php", false);
     xhr.setRequestHeader("Accept", "application/json");
     xhr.setRequestHeader("Content-Type", "application/json");
 
@@ -34,7 +28,7 @@ export class DatosService {
     xhr.withCredentials = true;
     
 
-    xhr.open("GET", "http://localhost/proyectoIngWeb/backend/api.php?action=datos", false);
+    xhr.open("GET", "http://127.0.0.1/proyectoIngWeb/backend/api.php?action=datos", false);
     xhr.setRequestHeader("Accept", "application/json");
     xhr.setRequestHeader("Content-Type", "application/json");
 

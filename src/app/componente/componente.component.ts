@@ -20,9 +20,11 @@ export class ComponenteComponent implements OnInit {
   idN:any = -1;
   descripcion:any;
 
-  lista:Array<String>=[];
+  lista:Array<Object>=[];
   lista2:Array<String>=[];
   lista3:Array<String>=[];
+
+  lista1A:Array<String>=[];
 
 
   constructor(public fb:FormBuilder, private servicio:DatosService) {
@@ -45,7 +47,8 @@ export class ComponenteComponent implements OnInit {
     //obtener datos
 
     //rellenar listas
-    let objListas = JSON.parse(this.servicio.obtenerListas());
+    let respuestaAPI =  this.servicio.obtenerListas();
+    let objListas = JSON.parse(respuestaAPI);
     console.log(objListas);
     for(let i = 0; i < objListas.length ; i++){
       console.log(objListas[i].titulo + ": " +objListas[i].descripcion);
@@ -67,7 +70,7 @@ export class ComponenteComponent implements OnInit {
       "estado": this.estado.value
     }
 
-    this.servicio.enviarPOST(cJson);
+    console.log(this.servicio.enviarPOST(cJson));
 
     if(idN == -1){
       if(this.estado.value == "Iniciada"){
@@ -84,11 +87,24 @@ export class ComponenteComponent implements OnInit {
   }
 
   Eliminar(){
-    if(this.estado.value == "Iniciada"){
+      let cJson = {
+        "action" : "eliminarDato",
+        "titulo" : this.titulo.value,
+        "descripcion": this.descripcion.value,
+        "estado": this.estado.value
+      }
+  
+      console.log(this.servicio.enviarPOST(cJson));
+
       this.lista.forEach((item,index)=>{
-        if(this.titulo.value==item) this.lista.splice(index,1);
+        if(this.titulo.value==item || this.descripcion.value==item) this.lista.splice(index,1);
       });
-    }
+      this.lista2.forEach((item,index)=>{
+        if(this.titulo.value==item || this.descripcion.value==item) this.lista.splice(index,1);
+      });
+      this.lista3.forEach((item,index)=>{
+        if(this.titulo.value==item || this.descripcion.value==item) this.lista.splice(index,1);
+      });
   }
 
   valor(){

@@ -27,14 +27,14 @@
             </li>
 
             <li>
-                <button type="submit" [disabled]="semaforo.invalid">Agregar</button>
-                <button type="button" (click)="Eliminar()" [disabled]="semaforo.invalid">Eliminar</button>
-                <button type="reset">Limpiar</button>
+                <label for="descripcion">Descripcion: </label>
+                <textarea name="descripcion" formControlName="descripcion" id="descripcion" maxlength="150"></textarea>
             </li>
 
             <li>
-                <label for="descripcion">Descripcion: </label>
-                <textarea name="descripcion" formControlName="descripcion" id="descripcion" maxlength="150"></textarea>
+                <button type="submit" [disabled]="semaforo.invalid">Agregar</button>
+                <button type="button" (click)="Eliminar()">Eliminar</button>
+                <button type="reset">Limpiar</button>
             </li>
         </ul>
 
@@ -43,11 +43,11 @@
         </ul>
 
         <ul class="tareas">
-            <li id="col2" *ngFor="let item of lista2">{{item}}</li>
+            <li id="col2" *ngFor="let item of lista2; index as i">{{item}}</li>
         </ul>
 
         <ul class="tareas">
-            <li id="col3" *ngFor="let item of lista3">{{item}}</li>
+            <li id="col3" *ngFor="let item of lista3; index as i">{{item}}</li>
         </ul>
     </form> 
 </body>
