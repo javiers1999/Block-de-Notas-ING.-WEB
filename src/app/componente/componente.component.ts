@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { DatosService } from '../datos.service';
 
 
 @Component({
@@ -15,6 +16,7 @@ export class ComponenteComponent implements OnInit {
   titulo:any;
   estado:any;
   id:any;
+  listId:any;
   idN:any = -1;
   descripcion:any;
 
@@ -22,7 +24,8 @@ export class ComponenteComponent implements OnInit {
   lista2:Array<String>=[];
   lista3:Array<String>=[];
 
-  constructor(public fb:FormBuilder) {
+
+  constructor(public fb:FormBuilder, private servicio:DatosService) {
       this.semaforo=this.fb.group({
         titulo:['',Validators.required],
         estado:['',Validators.required],
@@ -37,6 +40,23 @@ export class ComponenteComponent implements OnInit {
     this.estado=this.semaforo.get("estado") as FormGroup;
     this.id=this.semaforo.get("id") as FormGroup;
     this.descripcion=this.semaforo.get("descripcion") as FormGroup;
+
+
+    //obtener datos
+
+    //rellenar listas
+    let objListas = JSON.parse(this.servicio.obtenerListas());
+    console.log(objListas);
+    for(let i = 0; i < objListas.length ; i++){
+      console.log(objListas[i].titulo + ": " +objListas[i].descripcion);
+      if (objListas[i].estado == "Iniciada"){
+        this.lista.push(objListas[i].titulo + ": " +objListas[i].descripcion);
+      }else if(objListas[i].estado == "EnProceso"){
+        this.lista2.push(objListas[i].titulo + ": " + objListas[i].descripcion);
+      }else if(objListas[i].estado == "Terminada"){
+        this.lista3.push(objListas[i].titulo + ": " + objListas[i].descripcion);
+      }
+    }
   }
 
   crear(idN:number){
@@ -47,22 +67,7 @@ export class ComponenteComponent implements OnInit {
       "estado": this.estado.value
     }
 
-    let petPost = JSON.stringify(cJson);
-
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-
-    xhr.addEventListener("readystatechange", function() {
-      if(this.readyState === 4) {
-        console.log(this.responseText);
-      }
-    });
-
-    xhr.open("POST", "http://localhost/proyectoIngWeb/backend/api.php");
-    xhr.setRequestHeader("Accept", "application/json");
-    xhr.setRequestHeader("Content-Type", "application/json");
-
-    xhr.send(petPost);
+    this.servicio.enviarPOST(cJson);
 
     if(idN == -1){
       if(this.estado.value == "Iniciada"){
