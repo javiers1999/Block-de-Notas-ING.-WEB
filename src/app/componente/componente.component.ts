@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatosService } from '../datos.service';
+import { Interfaz } from '../interfaz'
 
 
 @Component({
